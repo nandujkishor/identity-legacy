@@ -3,7 +3,6 @@ from app import app
 from flask import Flask, request, Response
 import uuid
 import requests
-from config import Config
 
 CLIENT_ID = 'a273ed9e-915c-4e0f-9109-ec2541deb7b5'
 CLIENT_SECRET = 'F*denrd?/+pHjNV7lKcO6K309b?t9gHE'
@@ -15,12 +14,9 @@ AUTHORITY_URL = 'https://login.microsoftonline.com/' + TENANT
 REDIRECT_URI = BASEURL + '/getAToken'
 AUTHORIZE_URL = 'https://login.microsoftonline.com/am.amrita.edu/oauth2/authorize?'+'response_type=code&client_id='+ CLIENT_ID +'&redirect_uri='+BASEURL+'/getAToken'+'&'+'state={}'
 
-TEMP_AUTH = ''
-
 @app.route("/")
 def main():
     return "IDENTITY"
-
 
 @app.route("/login")
 def login():
@@ -35,8 +31,7 @@ def main_logic():
     auth_context = adal.AuthenticationContext(AUTHORITY_URL)
     token_response = auth_context.acquire_token_with_authorization_code(code, REDIRECT_URI, 'https://graph.microsoft.com',
                                                                         CLIENT_ID, CLIENT_SECRET)
-    TEMP_AUTH = token_response['accessToken']
-    return TEMP_AUTH
+    return token_response['accessToken']
 
 @app.route('/graphcall')
 def graphcall():

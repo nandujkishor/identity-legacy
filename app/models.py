@@ -31,7 +31,7 @@ class Orgaccess(db.Model):
     oid = db.Column(db.Integer, primary_key=True, db.Foreignkey('organisation.id'))
     perm = db.Column(db.Integer)
 
-class ClientApps(db.Model):
+class ClientApp(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
     img = db.Column(db.String(1000))

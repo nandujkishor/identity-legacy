@@ -33,10 +33,18 @@ class Orgaccess(db.Model):
 
 class ClientApps(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100))
+    img = db.Column(db.String(1000))
     secret = db.Column(db.String(100))
     # Hashed
     redirecturl = db.Column(db.String(1000))
-
+    trust = db.Column(db.Integer)
+    # 1: Highly trusted application - no scope authorization required
+    # (same team)
+    # 2: Verified trusted application - user authorization required
+    # (shows in the interface application is trusted)
+    # 3: Unknown application
+    # (show users to make sure their data is not misused)
 
 class Accesslogs(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -1,2 +1,2 @@
-# jaljeera
-SAC Website project
+# Identity
+SSO for SAC websites

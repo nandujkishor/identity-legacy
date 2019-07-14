@@ -18,6 +18,10 @@ AUTHORIZE_URL = 'https://login.microsoftonline.com/am.amrita.edu/oauth2/authoriz
 def main():
     return "IDENTITY"
 
+@app.route("/auth/")
+def auth_begin():
+    
+
 @app.route("/login")
 def login():
     auth_state = str(uuid.uuid4())
@@ -29,8 +33,7 @@ def login():
 def main_logic():
     code = request.args['code']
     auth_context = adal.AuthenticationContext(AUTHORITY_URL)
-    token_response = auth_context.acquire_token_with_authorization_code(code, REDIRECT_URI, 'https://graph.microsoft.com',
-                                                                        CLIENT_ID, CLIENT_SECRET)
+    token_response = auth_context.acquire_token_with_authorization_code(code, REDIRECT_URI, 'https://graph.microsoft.com', CLIENT_ID, CLIENT_SECRET)
     return token_response['accessToken']
 
 @app.route('/graphcall')

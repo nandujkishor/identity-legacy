@@ -6,6 +6,9 @@ class Users(db.Model):
     typ = db.Column(db.Integer)
     # User type: Student, Staff, Service account ...
     accesstoken = db.Column(db.String(100))
+    email = db.Column(db.String(200))
+
+    def __init__(self, id, )
 
 class Students(db.Model):
     campus = db.Column(db.String(5))
@@ -45,6 +48,11 @@ class ClientApp(db.Model):
     # (shows in the interface application is trusted)
     # 3: Unknown application
     # (show users to make sure their data is not misused)
+
+class AuthCode(db.Model):
+    atid = db.Column(db.Integer)
+
+class AccessCode(db.Model):
 
 class Accesslogs(db.Model):
     id = db.Column(db.Integer, primary_key=True)

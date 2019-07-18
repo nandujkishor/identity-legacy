@@ -12,7 +12,7 @@ API_VERSION = 'v1.0'
 TENANT = 'am.amrita.edu'
 AUTHORITY_URL = 'https://login.microsoftonline.com/' + TENANT
 REDIRECT_URI = BASEURL + '/getAToken'
-AUTHORIZE_URL = 'https://login.microsoftonline.com/am.amrita.edu/oauth2/authorize?'+'response_type=code&client_id='+ CLIENT_ID +'&redirect_uri='+BASEURL+'/getAToken'+'&'+'state={}'
+AUTHORIZE_URL = 'https://login.microsoftonline.com/am.amrita.edu/oauth2/authorize?'+'response_type=code&client_id='+ CLIENT_ID +'&redirect_uri={}/getAToken'+'&'+'state={}'
 
 @app.route("/")
 def main():
@@ -24,15 +24,18 @@ def auth_begin():
 
 @app.route("/id/authorize/")
 def login():
+    client_id = request.args['client_id']
+    redirect_url = BASEURL + '/microsoft/token' + request.args
     auth_state = str(uuid.uuid4())
     resp = Response(status=307)
-    resp.headers['location'] = AUTHORIZE_URL.format(auth_state)
+    resp.headers['location'] = AUTHORIZE_URL.format(redirect_url, auth_state)
     return resp
 
-@app.route("/getAToken")
+@app.route("/microsoft/token")
 def main_logic():
     code = request.args['code']
     auth_context = adal.AuthenticationContext(AUTHORITY_URL)
+    clientid = request.args['client_id']
     token_response = auth_context.acquire_token_with_authorization_code(code, REDIRECT_URI, 'https://graph.microsoft.com', CLIENT_ID, CLIENT_SECRET)
     token = token_response['accessToken']
     print(token)

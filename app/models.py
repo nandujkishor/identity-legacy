@@ -20,6 +20,8 @@ class Users(db.Model):
     def encode_auth_token(self, id):
         try:
             payload = {
+                'iss': app.config.get('BASEURL'),
+                
                 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=100, seconds=0),
                 'iat': datetime.datetime.utcnow(),
                 'sub': id

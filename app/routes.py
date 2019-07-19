@@ -3,6 +3,7 @@ from app import app
 from flask import Flask, request, Response
 import uuid
 import requests
+import urllib
 
 CLIENT_ID = 'a273ed9e-915c-4e0f-9109-ec2541deb7b5'
 CLIENT_SECRET = 'F*denrd?/+pHjNV7lKcO6K309b?t9gHE'
@@ -25,10 +26,11 @@ def auth_begin():
 @app.route("/id/authorize/")
 def login():
     client_id = request.args['client_id']
-    redirect_url = BASEURL + '/microsoft/token' + request.args
+    client_redirect_uri = request.args['redirect_uri']
+    redirect_uri = BASEURL + '/microsoft/token?client_id={}&redirect_uri={}'.format(client_id, urllib.quote(client_redirect_uri))
     auth_state = str(uuid.uuid4())
     resp = Response(status=307)
-    resp.headers['location'] = AUTHORIZE_URL.format(redirect_url, auth_state)
+    resp.headers['location'] = AUTHORIZE_URL.format(urllib.quote(redirect_uri), auth_state)
     return resp
 
 @app.route("/microsoft/token")
